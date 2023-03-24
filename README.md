@@ -70,7 +70,9 @@ Microsoft.EntityFrameworkCore.Tools
 
 ![image](https://user-images.githubusercontent.com/85175337/227417718-803088ea-0485-4444-8959-5bbee70403bc.png)
 
-Trước khi chạy câu lệch phải có class Context và kế thừa DBContext
+Trước khi chạy câu lệch phải có class Context và kế thừa DBContext 
+
+Lưu ý: nhớ đổi tên database phù hợp với db muốn kết nối
 
 ```C#
  public class JustBlogContext : DbContext
@@ -101,6 +103,9 @@ add-migration DBJustBlog
 ```C#
 update-database
 ```
+Sau khi chạy hoàn thiện sẽ được folder Migrations
+
+![image](https://user-images.githubusercontent.com/85175337/227419420-906f3e42-335d-4889-b11c-05f5558572cd.png)
 
 
 
