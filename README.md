@@ -3,7 +3,8 @@
 # :notebook_with_decorative_cover: Table of Contents
 - [Lý Thuyết](#Lý-Thuyết)
 - [Quy ước](#Quy-ước)
-- [Hưỡng dẫn Add](#Hưỡng-dẫn-Add)
+- [Hưỡng dẫn tạo database](#Hưỡng-dẫn-tạo-database)
+- [Hưỡng dẫn thêm dữ liệu vào database](#Hưỡng-dẫn-thêm-dữ-liệu-vào-database)
 
 ## Lý Thuyết
 
@@ -52,7 +53,7 @@ Trường hợp đánh 2 cặp khóa cho bảng trung gian để hỗ trợ cho 
 
 
 
-## Hưỡng dẫn Add
+## Hưỡng dẫn tạo database
 
 Lưu ý add đủ thư viện
 
@@ -72,7 +73,7 @@ Microsoft.EntityFrameworkCore.Tools
 
 Trước khi chạy câu lệch phải có class Context và kế thừa DBContext 
 
-Lưu ý: nhớ đổi tên database phù hợp với db muốn kết nối
+Lưu ý: nhớ đổi tên database phù hợp và nó sẽ `tạo tên database tương ứng với tên bạn đặt `
 
 ```C#
  public class JustBlogContext : DbContext
@@ -92,7 +93,7 @@ Lưu ý: nhớ đổi tên database phù hợp với db muốn kết nối
 
 ![image](https://user-images.githubusercontent.com/85175337/227417864-a81074a9-1dc9-44bf-be5c-81bea6b55cca.png)
 
-- Tạo Migration `add-migration` + với tên Database 
+- Tạo Migration `add-migration` + với tên Database ( nó không liên quan gì đến việc đặt tên database )
 
 ```C#
 add-migration DBJustBlog
@@ -107,11 +108,56 @@ Sau khi chạy hoàn thiện sẽ được folder Migrations
 
 ![image](https://user-images.githubusercontent.com/85175337/227419420-906f3e42-335d-4889-b11c-05f5558572cd.png)
 
+## Hưỡng dẫn thêm dữ liệu vào database
+- Tạo 1 class static để thêm phương thức hàm cho ModelBuilder 
 
+```C#
+public static class JustBlogStore
+    {
+        public static void SeedData(this ModelBuilder builder)
+        {
+            // add data 
 
+            builder.Entity<Category>().HasData(
+                new Category
+                {
+                    Id = 1,
+                    Name = "PRO",
+                    UrlSlug = "abc.com",
+                    Description = "abc"
+                }
+                );
+        }
+    }
+```
 
+- kế thừa hàm của DbContext OnModelCreating để cấu hình thêm dữ liệu
 
+```C#
+public class JustBlogContext : DbContext
+    {
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("server=.;database=DBJustBlog;Trusted_Connection=True;TrustServerCertificate=True");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.SeedData();
+        }
+    }
+```
+
+Sau khi thêm xong thì chạy lại câu lệch `add-migration DBJustBlog1` và `update-database`
+
+Lưu ý mỗi lần add dữ liệu thì nên đặt tên migration khác nhau để tránh lỗi ví dự
+
+Lần 1 là `add-migration DBJustBlog1` thì lần 2 phải khác tên lần 1 thì `add-migration DBJustBlog3` hoặc có thể trực tiếp xóa file Migrations
 
 
 
