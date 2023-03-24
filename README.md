@@ -3,6 +3,7 @@
 # :notebook_with_decorative_cover: Table of Contents
 - [Lý Thuyết](#Lý-Thuyết)
 - [Quy ước](#Quy-ước)
+- [Hưỡng dẫn Add](#Hưỡng-dẫn-Add)
 
 ## Lý Thuyết
 
@@ -51,10 +52,55 @@ Trường hợp đánh 2 cặp khóa cho bảng trung gian để hỗ trợ cho 
 
 
 
+## Hưỡng dẫn Add
 
+Lưu ý add đủ thư viện
 
+```C#
+Microsoft.EntityFrameworkCore
+```
 
+```C#
+Microsoft.EntityFrameworkCore.SqlServer
+```
 
+```C#
+Microsoft.EntityFrameworkCore.Tools
+```
+
+![image](https://user-images.githubusercontent.com/85175337/227417718-803088ea-0485-4444-8959-5bbee70403bc.png)
+
+Trước khi chạy câu lệch phải có class Context và kế thừa DBContext
+
+```C#
+ public class JustBlogContext : DbContext
+    {
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("server=.;database=DBJustBlog;Trusted_Connection=True;TrustServerCertificate=True");
+        }
+    }
+```
+
+- Vào đúng Package Manager Console để chạy câu lệch: 
+
+![image](https://user-images.githubusercontent.com/85175337/227417864-a81074a9-1dc9-44bf-be5c-81bea6b55cca.png)
+
+- Tạo Migration `add-migration` + với tên Database 
+
+```C#
+add-migration DBJustBlog
+```
+
+- Cập nhập xuống database
+
+```C#
+update-database
+```
 
 
 
