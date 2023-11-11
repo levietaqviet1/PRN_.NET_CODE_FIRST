@@ -104,6 +104,17 @@ add-migration DBJustBlog
 ```C#
 update-database
 ```
+
+- Nếu dùng cmd thì bạn có thể dùng câu lệch này
+
+```
+ dotnet ef migrations add MyFirstMigration --context BloggingContext
+```
+
+```
+dotnet ef database update --context BloggingContext
+```
+  
 Sau khi chạy hoàn thiện sẽ được folder Migrations
 
 ![image](https://user-images.githubusercontent.com/85175337/227419420-906f3e42-335d-4889-b11c-05f5558572cd.png)
