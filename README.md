@@ -108,11 +108,11 @@ update-database
 - Nếu dùng cmd thì bạn có thể dùng câu lệch này
 
 ```
- dotnet ef migrations add MyFirstMigration --context BloggingContext
+ dotnet ef --startup-project tenProject migrations add MyFirstMigration --context BloggingContext
 ```
 
 ```
-dotnet ef database update --context BloggingContext
+dotnet ef --startup-project tenProject database update --context BloggingContext
 ```
   
 Sau khi chạy hoàn thiện sẽ được folder Migrations
